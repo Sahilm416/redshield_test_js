@@ -8,8 +8,7 @@ export async function middleware(request) {
     if (url.pathname === "/Auth") {
       if (session.status) {
       //add path where logged in user should be redirected
-        url.pathname = "/";
-        return NextResponse.redirect(url);
+        return NextResponse.redirect(new URL("/", request.url));
       } else {
         return NextResponse.next();
       }
@@ -18,11 +17,10 @@ export async function middleware(request) {
     if (session.status) {
       return NextResponse.next();
     } else {
-      url.pathname = "/Auth";
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/Auth", request.url));
     }
 }
 export const config = {
-      //add routes in matcher array to protect them from unauthenticated users
+    //add routes in matcher array to protect them from unauthenticated users
     matcher: ["/", "/Auth" ],
 };
